@@ -12,4 +12,22 @@ public class Bill {
         this.money = money;
         this.date = date;
     }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
+
+    @Override
+    public String toString() {
+        return "Bill{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", money=" + money +
+                ", date='" + date + '\'' +
+                '}';
+    }
 }
