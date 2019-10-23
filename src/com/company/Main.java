@@ -69,9 +69,14 @@ public class Main {
             }
 
             if (selectExercise == 7) {
+                main.addData(listBill);
+                hashMap = main.inputListBillSameDay(listBill);
+                main.getListBillSameDay(hashMap, "2019-01-21");
             }
 
             if (selectExercise == 8) {
+                main.addData(listBill);
+               main.getListBillDistinct(listBill);
 
             }
 
@@ -178,11 +183,11 @@ public class Main {
     //Bài 3
     public void addData(List<Bill> listBill) {
         listBill.clear();
-        listBill.add(new Bill(303, "HD1", 3600000, "2019-08-12"));
-        listBill.add(new Bill(112, "HD2", 5000, "2019-09-21"));
-        listBill.add(new Bill(105, "HD3", 45000, "2019-01-21"));
+        listBill.add(new Bill(112, "HD1", 3600000, "2019-08-12"));
+        listBill.add(new Bill(112, "HD1", 5000, "2019-09-21"));
+        listBill.add(new Bill(112, "HD1", 45000, "2019-01-21"));
         listBill.add(new Bill(132, "HD4", 5000000, "2019-09-21"));
-        listBill.add(new Bill(125, "HD5", 45000, "2019-01-21"));
+        listBill.add(new Bill(132, "HD4", 45000, "2019-01-21"));
         listBill.add(new Bill(122, "HD6", 1000000, "2019-01-21"));
     }
 
@@ -197,17 +202,21 @@ public class Main {
     }
 
     public void sortBill(List<Bill> listBill) {
-        long temp = 0;
-        for (int i = 0; i < listBill.size(); i++) {
-            for (int j = i + 1; j < listBill.size(); j++) {
-                if (listBill.get(i).money > listBill.get(j).money) {
-                    temp = listBill.get(i).money;
-                    listBill.get(i).money = listBill.get(j).money;
-                    listBill.get(j).money = temp;
+
+        Collections.sort(listBill, new Comparator<Bill>() {
+            @Override
+            public int compare(Bill billOne, Bill billTwo) {
+                if (billOne.money < billTwo.money) {
+                    return -1;
+                } else {
+                    if (billOne.money == billTwo.money) {
+                        return 0;
+                    } else {
+                        return 1;
+                    }
                 }
             }
-        }
-
+        });
         System.out.print("\nInvoice after arrangement is :");
         for (int i = 0; i < listBill.size(); i++) {
             System.out.print("\n" + "Bill " + i + ":");
@@ -220,15 +229,12 @@ public class Main {
     //Bài 4
     public void distinctDate(List<Bill> listBill) {
         System.out.print("\nList after listing duplicates");
-        List<String> listDate = new ArrayList<>();
+        HashSet<String> hashSet = new HashSet<>();
         for (int i = 0; i < listBill.size(); i++) {
-            listDate.add(listBill.get(i).date);
+            hashSet.add(listBill.get(i).date);
         }
-        List<String> listDistinctDate = listDate
-                .stream()
-                .distinct()
-                .collect(Collectors.toList());
-        System.out.println(listDistinctDate);
+        System.out.println("\n" + hashSet);
+
     }
 
     //Bài 5
@@ -258,7 +264,23 @@ public class Main {
     }
 
     //Bài 7
+    private void getListBillSameDay(HashMap<String, List<Bill>> hashMap, String Date) {
+        List<Bill> listBill = new ArrayList<>();
+        listBill.addAll(hashMap.get(Date));
+        System.out.print(listBill);
+    }
+
     //Bài 8
+    private void getListBillDistinct(List<Bill> listBill) {
+        Set<Bill> items = new HashSet<>();
+        for (Bill item : listBill) {
+            items.add(item);
+        }
+        for (Bill item : items) {
+            System.out.println(item.toString());
+        }
+    }
+
     //II:Bài tập về String
     //Bài1
     public String inputString() {
@@ -521,21 +543,16 @@ public class Main {
         LocalDateTime localDateTime = LocalDateTime.parse(strTime, dtf);
 
         int minutes = localDateTime.getMinute();
-        if (minutes >= 30)
-        {
+        if (minutes >= 30) {
             localDateTime = localDateTime.plusHours(1);
         }
         localDateTime = localDateTime.truncatedTo(ChronoUnit.HOURS);
         String roundedTime = dtf.format(localDateTime);
-        Date date=convertJavaDate3(roundedTime);
+        Date date = convertJavaDate3(roundedTime);
         Timestamp timestamp = new Timestamp(date.getTime());
         System.out.println("\ntimestamp when rounded : " + timestamp.getTime());
 
-
-
     }
-
-
 
     //Bài 7
     private Date convertJavaDate3(String strTime) {

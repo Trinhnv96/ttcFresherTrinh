@@ -1,5 +1,7 @@
 package com.company;
 
+import java.util.Objects;
+
 public class Bill {
     int id;
     String name;
@@ -19,6 +21,20 @@ public class Bill {
 
     public void setDate(String date) {
         this.date = date;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Bill)) return false;
+        Bill bill = (Bill) o;
+        return id == bill.id &&
+                name.equals(bill.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name);
     }
 
     @Override
